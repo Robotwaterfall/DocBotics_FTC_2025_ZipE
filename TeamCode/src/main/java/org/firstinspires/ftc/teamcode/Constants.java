@@ -9,6 +9,8 @@ public class Constants {
 
     public static final class transferConstants{
 
+        public static double transferMotorPower = 0.8;
+
 
     }
 

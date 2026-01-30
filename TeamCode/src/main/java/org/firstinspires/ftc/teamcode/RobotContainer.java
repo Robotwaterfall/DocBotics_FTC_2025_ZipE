@@ -7,15 +7,12 @@ import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Command.teleOpFlywheelCommand;
 import org.firstinspires.ftc.teamcode.Command.teleOpMecanumDriveCommand;
-import org.firstinspires.ftc.teamcode.Subsystem.flywheelSubsystem;
 import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
 
 @TeleOp(name = "TeleOpMode")
 public class RobotContainer extends CommandOpMode {
     private mecanumDriveSubsystem driveSub;
-    private flywheelSubsystem flywheelSub;
     private GamepadEx driverJoystick;
 
     @Override
@@ -49,12 +46,6 @@ public class RobotContainer extends CommandOpMode {
     }
 
     public void setDefaultCommands() {
-
-        Trigger transferTrigger = new Trigger(() -> {
-            return driverJoystick.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.7;
-        } );
-
-        transferTrigger.whileActiveContinuous(new teleOpFlywheelCommand(flywheelSub));
 
 
     }

@@ -8,11 +8,15 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Command.teleOpMecanumDriveCommand;
+import org.firstinspires.ftc.teamcode.Command.teleOpTransferCommand;
 import org.firstinspires.ftc.teamcode.Subsystem.mecanumDriveSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystem.transferSubsystem;
 
 @TeleOp(name = "TeleOpMode")
 public class RobotContainer extends CommandOpMode {
     private mecanumDriveSubsystem driveSub;
+
+    private transferSubsystem transferSub;
     private GamepadEx driverJoystick;
 
     @Override
@@ -46,6 +50,12 @@ public class RobotContainer extends CommandOpMode {
     }
 
     public void setDefaultCommands() {
+
+        Trigger shootTrigger = new Trigger(() -> {
+            return driverJoystick.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.7;
+        } );
+
+        shootTrigger.whileActiveContinuous(new teleOpTransferCommand(transferSub));
 
 
     }

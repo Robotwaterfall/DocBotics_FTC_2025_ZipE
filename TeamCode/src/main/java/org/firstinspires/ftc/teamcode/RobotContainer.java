@@ -33,6 +33,14 @@ public class RobotContainer extends CommandOpMode {
                 hardwareMap
         );
 
+        flywheelSub = new flywheelSubsystem(
+                hardwareMap.get(DcMotor.class,"shooterMotor")
+        );
+
+        transferSub = new transferSubsystem(
+                hardwareMap.get(DcMotor.class,"transferMotor")
+        );
+
         driverJoystick = new GamepadEx(gamepad1);
 
         runCommands();

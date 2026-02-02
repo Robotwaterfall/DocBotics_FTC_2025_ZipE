@@ -13,18 +13,21 @@ public class teleOpMecanumDriveCommand extends CommandBase {
     private final Supplier<Double> xSupplier;
     private final Supplier<Double> ySupplier;
     private final Supplier<Double> rSupplier;
+    private final Supplier<Boolean> resetSupplier;
 
     public teleOpMecanumDriveCommand(
             mecanumDriveSubsystem driveSub,
             Supplier<Double> xSupplier,
             Supplier<Double> ySupplier,
-            Supplier<Double> rSupplier
+            Supplier<Double> rSupplier,
+            Supplier<Boolean> resetSupplier
     ) {
 
         this.driveSub = driveSub;
         this.xSupplier = xSupplier;
         this.ySupplier = ySupplier;
         this.rSupplier = rSupplier;
+        this.resetSupplier = resetSupplier;
         addRequirements(driveSub);
     }
 
@@ -35,7 +38,13 @@ public class teleOpMecanumDriveCommand extends CommandBase {
         double strafe  = -xSupplier.get();
         double rotation = -rSupplier.get();
 
+        boolean reset = resetSupplier.get();
+
         driveSub.drive(forward, strafe, rotation);
+
+        if(reset){
+            driveSub.resetIMU();
+        }
     }
 
 }

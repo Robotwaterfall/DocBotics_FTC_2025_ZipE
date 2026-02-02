@@ -18,8 +18,13 @@ public class Constants {
     }
 
     public static double shooterPower = 0.6;
+
+    public static double farZoneShooting = 0.9;
+    public static double cycleShoot = 0.3;
     public static double timeOutShooting = 0.4;
     public static double timeOutbetweenShoots = 1.5;
+    public static double strafeCorrection = 1.1;
+    public static boolean isFieldCentric = true;
 
 
     public static final class mecanumConstants{

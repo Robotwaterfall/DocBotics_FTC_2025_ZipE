@@ -4,10 +4,14 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.Constants;
 
 public class mecanumDriveSubsystem extends SubsystemBase {
@@ -19,17 +23,42 @@ public class mecanumDriveSubsystem extends SubsystemBase {
 
     private final FtcDashboard dashboard = FtcDashboard.getInstance();
 
+    public final IMU imu;
+    public boolean isFieldCentric = Constants.isFieldCentric; //true = field-centric, false = robot-centric
+    private double strafeCorrection = Constants.strafeCorrection;
+
     public mecanumDriveSubsystem(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight, HardwareMap hardwareMap) {
         m_Fl = frontLeft;
         m_Fr = frontRight;
         m_Rl = backLeft;
         m_Rr = backRight;
 
+        imu = hardwareMap.get(IMU.class, "imu");
+
+        IMU.Parameters parameters = new IMU.Parameters(
+                new RevHubOrientationOnRobot(
+                        RevHubOrientationOnRobot.LogoFacingDirection.RIGHT,
+                        RevHubOrientationOnRobot.UsbFacingDirection.UP
+                )
+        );
+
+        imu.initialize(parameters);
+
         // Set motor directions (typical mecanum setup)
         m_Fl.setDirection(DcMotorSimple.Direction.FORWARD);
         m_Fr.setDirection(DcMotorSimple.Direction.REVERSE);
         m_Rl.setDirection(DcMotorSimple.Direction.FORWARD);
         m_Rr.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        resetIMU();
+    }
+
+    public void setFieldCentric(boolean fieldCentric){
+        isFieldCentric = fieldCentric;
+    }
+
+    public void resetIMU(){
+        imu.resetYaw();
     }
 
     /**
@@ -47,6 +76,22 @@ public class mecanumDriveSubsystem extends SubsystemBase {
         fwdPower = forward;
         strPower = strafe;
         rotPower = rotation;
+
+        //Field centric math
+        if (isFieldCentric) {
+            YawPitchRollAngles robotOrientation = imu.getRobotYawPitchRollAngles();
+            double headingRad = -robotOrientation.getYaw(AngleUnit.RADIANS);  // -heading
+
+            double tempForward = forward * Math.cos(headingRad) - strafe * Math.sin(headingRad);
+            double tempStrafe  = forward * Math.sin(headingRad) + strafe * Math.cos(headingRad);
+
+            forward = tempForward;
+            strafe  = tempStrafe;
+        }
+
+        //also apply strafe correction (optional, but helps with the field-centric feel when driving)
+        strafe *= strafeCorrection;
+
 
 
         // Mecanum kinematics

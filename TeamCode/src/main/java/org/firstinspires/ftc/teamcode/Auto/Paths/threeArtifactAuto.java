@@ -17,6 +17,7 @@ public class threeArtifactAuto extends autoRobotContainer {
 
     @Override
     public void path() {
+        runShooter();
 
         schedule(
                 new SequentialCommandGroup(

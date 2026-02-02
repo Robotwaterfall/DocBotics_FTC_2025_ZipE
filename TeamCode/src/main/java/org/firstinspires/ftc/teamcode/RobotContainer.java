@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static org.firstinspires.ftc.teamcode.Constants.cycleShoot;
+import static org.firstinspires.ftc.teamcode.Constants.farZoneShooting;
 import static org.firstinspires.ftc.teamcode.Constants.shooterPower;
 import static org.firstinspires.ftc.teamcode.Constants.timeOutShooting;
 import static org.firstinspires.ftc.teamcode.Constants.timeOutbetweenShoots;
@@ -72,9 +74,11 @@ public class RobotContainer extends CommandOpMode {
                         driveSub,
                         () -> applyDeadband(driverJoystick.getLeftY(), 0.05),  // Forward/back
                         () -> applyDeadband(driverJoystick.getLeftX(), 0.05),  // Strafe
-                        () -> applyDeadband(driverJoystick.getRightX(), 0.05) // Rotate
+                        () -> applyDeadband(driverJoystick.getRightX(), 0.05), // Rotate
+                        () -> driverJoystick.getButton(GamepadKeys.Button.START)        // Reset
                 )
         );
+
 
         Trigger transferTrigger = new Trigger(() -> {
             return driverJoystick.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.7;
@@ -91,8 +95,22 @@ public class RobotContainer extends CommandOpMode {
                 new waitCommand(timeOutbetweenShoots) //seconds
         ));
 
-        driverJoystick.getGamepadButton(GamepadKeys.Button.A)
+        driverJoystick.getGamepadButton(GamepadKeys.Button.Y)
                 .toggleWhenPressed(new teleOpFlywheelCommand(flywheelSub, shooterPower));
+
+        driverJoystick.getGamepadButton(GamepadKeys.Button.B)
+                .toggleWhenPressed(new teleOpFlywheelCommand(flywheelSub, farZoneShooting));
+
+        driverJoystick.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
+                .whileActiveContinuous(new SequentialCommandGroup(
+                        new waitCommand(timeOutbetweenShoots),
+                        new teleOpTransferCommand(transferSub, transferMotorPower, timeOutShooting)
+
+                ));
+
+        driverJoystick.getGamepadButton(GamepadKeys.Button.DPAD_RIGHT)
+                .whileActiveContinuous(new teleOpFlywheelCommand(flywheelSub, cycleShoot));
+
     }
 
     private void runCommands() {

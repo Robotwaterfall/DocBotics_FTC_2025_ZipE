@@ -104,6 +104,9 @@ public class RobotContainer extends CommandOpMode {
                 new waitCommand(timeOutbetweenShoots) //seconds
         ));
 
+        driverJoystick.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+                        .whileActiveContinuous(new teleOpFlywheelCommand(flywheelSub, -shooterPower));
+
         driverJoystick.getGamepadButton(GamepadKeys.Button.Y)
                 .toggleWhenPressed(new teleOpFlywheelCommand(flywheelSub, shooterPower));
 

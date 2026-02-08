@@ -24,24 +24,23 @@ public class threeArtifactAuto_DriveAway extends autoRobotContainer {
 
         schedule(
                 new SequentialCommandGroup(
-                        new MoveRobotEncoderXY_CMD(-22, -22, 3, 0.4, driveSub),
+                        new MoveRobotEncoderXY_CMD(-40 ,-40, 3.5, 0.4, driveSub),
 
                         new autoLimelightLockCommand(llSub, driveSub),
 
                         new teleOpFlywheelCommand(flywheelSub, shooterVelocity),
                         new teleOpTransferCommand(transferSub, llSub, transferMotorPower,
                                 timeOutShooting, true),
-                        new waitCommand(timeOutbetweenShots),
+
 
                         new teleOpFlywheelCommand(flywheelSub, shooterVelocity),
                         new teleOpTransferCommand(transferSub, llSub, transferMotorPower,
                                 timeOutShooting, true),
-                        new waitCommand(timeOutbetweenShots),
+
 
                         new teleOpFlywheelCommand(flywheelSub, shooterVelocity),
                         new teleOpTransferCommand(transferSub, llSub, transferMotorPower,
-                                timeOutShooting, true),
-                        new waitCommand(timeOutbetweenShots)
+                                timeOutShooting, true)
                 )
         );
     }

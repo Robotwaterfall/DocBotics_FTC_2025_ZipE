@@ -19,16 +19,16 @@ public class Constants {
 
     @Config
     public static final class shooterConstants{
-        public static double shooterVelocity = 15;
+        public static double shooterVelocity = 14;
 
-        public static double farZoneShootingVelocity = 17;
+        public static double farZoneShootingVelocity = 16.5;
         public static double timeOutShooting = 0.35;
         public static double timeOutbetweenShots = 1.0;
-        public static double shooterTolerance = 0.3;
+        public static double shooterTolerance = 0.57;
 
     }
 
-    public static double llLockOnKp = 0.025;
+    public static double llLockOnKp = 0.030;
     public static double lockOnDeadband = 5;
 
 
@@ -37,8 +37,8 @@ public class Constants {
 
         public static double min_Tx = 4;
         public static double max_Tx = 25;
-        public static double min_Shooter_Power = 0.54;
-        public static double max_Shooter_Power = 0.64;
+        public static double min_Shooter_Power = 14.25;
+        public static double max_Shooter_Power = 16.5;
 
         public static double ShooterLockedZone = 8;
 

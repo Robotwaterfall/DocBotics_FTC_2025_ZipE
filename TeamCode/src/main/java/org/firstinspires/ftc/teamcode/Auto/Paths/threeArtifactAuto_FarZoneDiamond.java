@@ -36,17 +36,16 @@ public class threeArtifactAuto_FarZoneDiamond extends autoRobotContainer {
                         new teleOpFlywheelCommand(flywheelSub, farZoneShootingVelocity),
                         new teleOpTransferCommand(transferSub, llSub, transferMotorPower,
                                 timeOutShooting, true),
-                        new waitCommand(timeOutbetweenShots),
+
 
                         new teleOpFlywheelCommand(flywheelSub, farZoneShootingVelocity),
                         new teleOpTransferCommand(transferSub, llSub, transferMotorPower,
                                 timeOutShooting, true),
-                        new waitCommand(timeOutbetweenShots),
+
 
                         new teleOpFlywheelCommand(flywheelSub, farZoneShootingVelocity),
                         new teleOpTransferCommand(transferSub, llSub, transferMotorPower,
-                                timeOutShooting, true),
-                        new waitCommand(timeOutbetweenShots)
+                                timeOutShooting, true)
 
 
                 )

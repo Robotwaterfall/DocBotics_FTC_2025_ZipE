@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.Command.autoLimelightLockCommand;
+import org.firstinspires.ftc.teamcode.Command.teleOpFlywheelAdjustCommand;
 import org.firstinspires.ftc.teamcode.Command.teleOpFlywheelCommand;
 import org.firstinspires.ftc.teamcode.Command.teleOpMecanumDriveCommand;
 import org.firstinspires.ftc.teamcode.Command.teleOpTransferCommand;
@@ -112,7 +113,7 @@ public class RobotContainer extends CommandOpMode {
                 .whileActiveContinuous(new SequentialCommandGroup(
                         new autoLimelightLockCommand(llSub, driveSub),
                         new teleOpFlywheelCommand(flywheelSub, shooterVelocity),
-                        new waitCommand(timeOutbetweenShots),
+
                         new teleOpTransferCommand(transferSub, llSub, transferMotorPower,
                                 timeOutShooting, false)
                 ));
@@ -121,7 +122,7 @@ public class RobotContainer extends CommandOpMode {
                 .whileActiveContinuous(new SequentialCommandGroup(
                         new autoLimelightLockCommand(llSub, driveSub),
                         new teleOpFlywheelCommand(flywheelSub, farZoneShootingVelocity),
-                        new waitCommand(timeOutbetweenShots),
+
                         new teleOpTransferCommand(transferSub, llSub, transferMotorPower,
                                 timeOutShooting, false)
                 ));
@@ -130,6 +131,16 @@ public class RobotContainer extends CommandOpMode {
                 .whileActiveContinuous(
                         new teleOpFlywheelCommand(flywheelSub, 0)
                 );
+
+        driverJoystick.getGamepadButton(GamepadKeys.Button.A)
+                .whileActiveContinuous( new SequentialCommandGroup(
+                        new autoLimelightLockCommand(llSub, driveSub),
+
+                        new teleOpFlywheelAdjustCommand(llSub, flywheelSub),
+
+                        new teleOpTransferCommand(transferSub, llSub, transferMotorPower,
+                                timeOutShooting, false)
+                ));
 
     }
 
